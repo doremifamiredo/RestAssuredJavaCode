@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "User",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "integer"
+        },
+        "teams": {
+          "type": "array"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "roles": {
+          "type": "array"
+        },
+        "positions": {
+          "type": "array"
+        },
+        "plain_password": {
+          "type": "string"
+        },
+        "cities": {
+          "type": "array"
+        },
+        "companies": {
+          "type": "array"
+        },
+        "work_history": {
+          "type": "array"
+        },
+        "edu_history": {
+          "type": "array"
+        },
+        "customData": {
+          "type": "object",
+          "properties": {
+            "isCV": {
+              "type": "boolean"
+            },
+            "salesOpenTime": {
+              "type": "string"
+            },
+            "salesStatus": {
+              "type": "string"
+            }
+          }
+        },
+        "cd": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

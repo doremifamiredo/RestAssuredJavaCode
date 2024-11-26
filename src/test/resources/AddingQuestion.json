@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Question",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "integer"
+        },
+        "quizes": {
+          "type": "array"
+        },
+        "__names": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "contributors": {
+          "type": "array"
+        },
+        "decliners": {
+          "type": "array"
+        },
+        "hints": {
+          "type": "array"
+        },
+        "additionalQuestionsArr": {
+          "type": "array"
+        },
+        "useCases": {
+          "type": "array"
+        },
+        "videos": {
+          "type": "array"
+        },
+        "facts": {
+          "type": "array"
+        },
+        "interviews": {
+          "type": "array"
+        },
+        "hashTags": {
+          "type": "array"
+        },
+        "shortAnswers": {
+          "type": "array"
+        },
+        "detailedAnswers": {
+          "type": "array"
+        },
+        "cd": {
+          "type": "string"
+        },
+        "isDuplicated": {
+          "type": "boolean"
+        },
+        "useCasesLength": {
+          "type": "integer"
+        },
+        "factsLength": {
+          "type": "integer"
+        },
+        "answerProgressCount": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "_id",
+        "quizes",
+        "__names",
+        "name",
+        "contributors",
+        "decliners",
+        "hints",
+        "additionalQuestionsArr",
+        "useCases",
+        "videos",
+        "facts",
+        "interviews",
+        "hashTags",
+        "shortAnswers",
+        "detailedAnswers",
+        "cd",
+        "isDuplicated",
+        "useCasesLength",
+        "factsLength",
+        "answerProgressCount"
+      ]
+    }
+  },
+  "required": [
+    "data"
+  ]
+}

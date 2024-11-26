@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "User",
+  "type": "object",
+  "properties": {
+    "token": {"type": "string"},
+    "refresh_token": {"type": "string"},
+    "user": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "description": "The unique identifier for a user",
+          "type": "integer"
+        },
+        "teams": { "type": "array" },
+        "surname": { "type": "string"},
+        "first_name": { "type": "string"},
+        "username": { "type": "string"},
+        "roles": { "type": "array" },
+        "positions": { "type": "array" },
+        "plain_password": { "type": "string"},
+        "cities": { "type": "array" },
+        "companies": { "type": "array" },
+        "work_history": { "type": "array" },
+        "edu_history": { "type": "array" },
+        "cd": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "password": {"type": "string"},
+        "name": {"type": "string"},
+        "email": {
+          "type": "string",
+          "format": "email"
+        }
+      },
+      "required": [
+        "_id", "surname", "first_name", "username", "cd", "password", "name", "email"
+      ]
+    }
+  },
+  "required": [
+    "token", "refresh_token", "user"
+  ]
+}

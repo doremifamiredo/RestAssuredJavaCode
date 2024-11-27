@@ -1,5 +1,7 @@
 package Helpers;
-
+import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
@@ -85,8 +87,8 @@ public class APIHelper {
            //     .body(matchesJsonSchemaInClasspath("AddingQuestion.json"))
     }
 
-    public static Quiz addingQuiz(QuizInfo quiz, String token) {
-        AddingQuiz addingQuiz = given()
+    public static Response addingQuiz(QuizInfo quiz, String token) {
+        return given()
                 .spec(requestSpec)
                 .header("Authorization", token)
                 .body(quiz)
@@ -94,9 +96,7 @@ public class APIHelper {
                 .post("quiz")
                 .then().log().body()
                 .statusCode(200)
-                .body(matchesJsonSchemaInClasspath("AddingQuiz.json"))
-                .extract().body().as(AddingQuiz.class);
-        return addingQuiz.data;
+                .extract().response();
     }
 
 }

@@ -1,10 +1,13 @@
 import Helpers.*;
 
+import io.restassured.path.json.JsonPath;
 import org.bson.Document;
 import org.junit.jupiter.api.*;
 import Helpers.DataHelper.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.List;
 
 import static Helpers.APIHelper.getToken;
 import static Helpers.DataHelper.getEditInfo;
@@ -21,7 +24,7 @@ public class Tests {
     @DisplayName("1. Authorization on the portal")
     void authorizationOnThePortal() {
         var authInfo = new AuthInfo("somov_oleg", "DY;nwmkgzpnNx9n");
-        var actual = APIHelper.authorization(authInfo).user;
+        var actual = APIHelper.authorization(authInfo);
         Document expected = dataBase.getDocument("users", "_id", actual._id);
         assertAll(() -> assertEquals(expected.get("_id"), actual._id),
                 () -> assertEquals(expected.get("surname"), actual.surname),
@@ -35,15 +38,15 @@ public class Tests {
     @MethodSource("Helpers.UserGenerator#dataFakerStream")
     @DisplayName("2. Adding a user")
     void addingUser(AddingInfo addingInfo) {
-        var actual = APIHelper.addingUser(addingInfo, getToken());
-        Document expected = dataBase.getDocument("users", "_id", actual._id);
-        String roles = expected.get("roles").toString().replaceAll("\\[|\\]", "");
-        assertAll(() -> assertEquals(expected.get("_id"), actual._id),
+        var response = APIHelper.addingUser(addingInfo, getToken());
+        JsonPath actual = response.jsonPath();
+        Document expected = dataBase.getDocument("users", "_id", actual.getInt("data._id"));
+        assertAll(() -> assertEquals(expected.get("_id"), actual.getInt("data._id")),
                 () -> assertEquals(expected.get("surname"), addingInfo.surname),
                 () -> assertEquals(expected.get("first_name"), addingInfo.first_name),
                 () -> assertEquals(expected.get("username"), addingInfo.username),
-                () -> assertEquals(roles, addingInfo.roles),
-                () -> assertEquals(expected.get("name"), actual.name),
+                () -> assertEquals(addingInfo.roles, actual.getString("data.roles[0]")),
+                () -> assertEquals(expected.get("name"), actual.getString("data.name")),
                 () -> assertEquals(expected.get("email"), addingInfo.email));
     }
 
@@ -72,11 +75,14 @@ public class Tests {
     @Test
     @DisplayName("5. Adding a quiz")
     void addingQuiz() {
-        var actual = APIHelper.addingQuiz(getQuizInfo(), getToken());
-        Document expected = dataBase.getDocument("quizzes", "_id", actual._id);
-        assertAll(() -> assertEquals(expected.get("_id"), actual._id),
-                () -> assertEquals(expected.get("answerType"), actual.answerType),
-                () -> assertTrue(actual.isValid),
-                () -> assertEquals(expected.get("name"), actual.name));
+        var response = APIHelper.addingQuiz(getQuizInfo(), getToken());
+        JsonPath actual = response.jsonPath();
+        Document expected = dataBase.getDocument("quizzes", "_id", actual.getInt("data._id"));
+        assertAll(() -> assertEquals(expected.get("_id"), actual.getInt("data._id")),
+                () -> assertEquals(expected.get("answerType"), actual.getString("data.answerType")),
+                () -> assertTrue(actual.getBoolean("data.isValid")),
+                () -> assertEquals(expected.get("name"), actual.getString("data.name")),
+                () -> assertArrayEquals(new Object[]{actual.getList("data.variations")},
+                        new Object[]{expected.get("variations")}));
     }
 }

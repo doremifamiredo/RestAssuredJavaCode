@@ -1,11 +1,12 @@
 package Helpers;
 
+import io.restassured.response.Response;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import Helpers.DataHelper.*;
-
+import static org.hamcrest.Matchers.*;
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
@@ -21,7 +22,7 @@ public class APIHelper {
     private APIHelper() {
     }
 
-    public static LoginUser authorization(AuthInfo authInfo) {
+    public static User authorization(AuthInfo authInfo) {
         LoginUser loginUser = given()
                 .spec(requestSpec)
                 .body(authInfo)
@@ -30,20 +31,19 @@ public class APIHelper {
                 .then().log().body()
                 .statusCode(200)
                 .body(matchesJsonSchemaInClasspath("LoginUser.json"))
+                .body("user.username", is(authInfo.username))
                 .extract().body().as(LoginUser.class);
         token = loginUser.token;
-        return loginUser;
+        return loginUser.user;
     }
 
     public static String getToken() {
-        if (token == null) {
-            token = authorization(new AuthInfo("somov_oleg", "DY;nwmkgzpnNx9n")).token;
-        }
+        if (token == null) authorization(new AuthInfo("somov_oleg", "DY;nwmkgzpnNx9n"));
         return token;
     }
 
-    public static User addingUser(AddingInfo addingInfo, String token) {
-        AddingUser addingUser = given()
+    public static Response addingUser(AddingInfo addingInfo, String token) {
+        return given()
                 .spec(requestSpec)
                 .header("Authorization", token)
                 .body(addingInfo)
@@ -52,8 +52,7 @@ public class APIHelper {
                 .then().log().body()
                 .statusCode(200)
                 .body(matchesJsonSchemaInClasspath("AddingUser.json"))
-                .extract().body().as(AddingUser.class);
-        return addingUser.data;
+                .extract().response();
     }
 
     public static Question addingQuestion(QuestionInfo question, String token) {
@@ -82,11 +81,10 @@ public class APIHelper {
                 .extract()
                 .body().as(EditingQuestion.class);
         return editingQuestion.data.getVersionDB();
-           //     .body(matchesJsonSchemaInClasspath("AddingQuestion.json"))
     }
 
-    public static Quiz addingQuiz(QuizInfo quiz, String token) {
-        AddingQuiz addingQuiz = given()
+    public static Response addingQuiz(QuizInfo quiz, String token) {
+        return given()
                 .spec(requestSpec)
                 .header("Authorization", token)
                 .body(quiz)
@@ -94,9 +92,7 @@ public class APIHelper {
                 .post("quiz")
                 .then().log().body()
                 .statusCode(200)
-                .body(matchesJsonSchemaInClasspath("AddingQuiz.json"))
-                .extract().body().as(AddingQuiz.class);
-        return addingQuiz.data;
+                .extract().response();
     }
 
 }

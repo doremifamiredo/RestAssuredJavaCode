@@ -70,7 +70,33 @@ public class APIHelper {
         return addingQuestion.data;
     }
 
-  //  public static Question editingQuestion(EditingQuestionInfo editQuestion, String token) {
+    public static VersionDB editingQuestion(EditingQuestionInfo editQuestion, String token) {
+        EditingQuestion editingQuestion = given()
+                .spec(requestSpec)
+                .header("Authorization", token)
+                .body(editQuestion)
+                .when()
+                .post("create-lts")
+                .then().log().body()
+                .statusCode(200)
+                .extract()
+                .body().as(EditingQuestion.class);
+        return editingQuestion.data.getVersionDB();
+           //     .body(matchesJsonSchemaInClasspath("AddingQuestion.json"))
+    }
 
-  //  }
+    public static Quiz addingQuiz(QuizInfo quiz, String token) {
+        AddingQuiz addingQuiz = given()
+                .spec(requestSpec)
+                .header("Authorization", token)
+                .body(quiz)
+                .when()
+                .post("quiz")
+                .then().log().body()
+                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("AddingQuiz.json"))
+                .extract().body().as(AddingQuiz.class);
+        return addingQuiz.data;
+    }
+
 }

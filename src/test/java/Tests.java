@@ -1,14 +1,14 @@
 import Helpers.*;
 
-import net.datafaker.Faker;
 import org.bson.Document;
 import org.junit.jupiter.api.*;
 import Helpers.DataHelper.*;
-import io.restassured.response.Response;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static Helpers.APIHelper.getToken;
+import static Helpers.DataHelper.getEditInfo;
+import static Helpers.DataHelper.getQuizInfo;
 import static Helpers.UserGenerator.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +22,7 @@ public class Tests {
     void authorizationOnThePortal() {
         var authInfo = new AuthInfo("somov_oleg", "DY;nwmkgzpnNx9n");
         var actual = APIHelper.authorization(authInfo).user;
-        Document expected = dataBase.getDocument("users", "username", authInfo.username);
+        Document expected = dataBase.getDocument("users", "_id", actual._id);
         assertAll(() -> assertEquals(expected.get("_id"), actual._id),
                 () -> assertEquals(expected.get("surname"), actual.surname),
                 () -> assertEquals(expected.get("first_name"), actual.first_name),
@@ -36,7 +36,7 @@ public class Tests {
     @DisplayName("2. Adding a user")
     void addingUser(AddingInfo addingInfo) {
         var actual = APIHelper.addingUser(addingInfo, getToken());
-        Document expected = dataBase.getDocument("users", "username", addingInfo.username);
+        Document expected = dataBase.getDocument("users", "_id", actual._id);
         String roles = expected.get("roles").toString().replaceAll("\\[|\\]", "");
         assertAll(() -> assertEquals(expected.get("_id"), actual._id),
                 () -> assertEquals(expected.get("surname"), addingInfo.surname),
@@ -52,7 +52,7 @@ public class Tests {
     void addingQuestion() {
         String question = faker.internet().emailSubject();
         var actual = APIHelper.addingQuestion(new QuestionInfo(question), getToken());
-        Document expected = dataBase.getDocument("themequestions", "name", question);
+        Document expected = dataBase.getDocument("themequestions", "_id", actual._id);
         assertAll(() -> assertEquals(expected.get("_id"), actual._id),
                 () -> assertEquals(expected.get("name"), actual.name));
     }
@@ -60,8 +60,23 @@ public class Tests {
     @Test
     @DisplayName("4. Editing a question")
     void editingQuestion() {
-        String question = faker.internet().emailSubject();
-        var actual = APIHelper.addingQuestion(new QuestionInfo(question), getToken());
-     //   var actual = APIHelper.editingQuestion(new QuestionInfo(question), getToken());
+        String question = faker.internet().emailSubject() + "?";
+        String answer = faker.internet().emailSubject();
+        int id = APIHelper.addingQuestion(new QuestionInfo(question), getToken())._id;
+        var actual = APIHelper.editingQuestion(getEditInfo(question, answer, Integer.toString(id)), getToken());
+        Document expected = dataBase.getDocument("themequestions", "_id", id);
+        assertAll(() -> assertEquals(expected.get("answer"), actual.data.answer),
+                () -> assertEquals(expected.get("name"), actual.name));
+    }
+
+    @Test
+    @DisplayName("5. Adding a quiz")
+    void addingQuiz() {
+        var actual = APIHelper.addingQuiz(getQuizInfo(), getToken());
+        Document expected = dataBase.getDocument("quizzes", "_id", actual._id);
+        assertAll(() -> assertEquals(expected.get("_id"), actual._id),
+                () -> assertEquals(expected.get("answerType"), actual.answerType),
+                () -> assertTrue(actual.isValid),
+                () -> assertEquals(expected.get("name"), actual.name));
     }
 }

@@ -52,7 +52,7 @@ public class UserGenerator {
     }
 
     private static String getEmail() {
-        return switch (faker.random().nextInt(5)) {
+        return switch (4) {
             case 1 -> faker.internet().emailAddress();
             case 2 -> faker.internet().username();
             case 3 -> fakerRU.internet().username();

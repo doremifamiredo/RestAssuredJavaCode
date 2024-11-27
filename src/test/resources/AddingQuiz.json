@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "integer"
+        },
+        "correctAnswers": {
+          "type": "array",
+          "items": {}
+        },
+        "files": {
+          "type": "array",
+          "items": {}
+        },
+        "names": {
+          "type": "array",
+          "items": {}
+        },
+        "audioNames": {
+          "type": "array",
+          "items": {}
+        },
+        "answerType": {
+          "type": "string"
+        },
+        "isValid": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "variations": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "isCorrect": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "name",
+                "isCorrect"
+              ]
+            }
+          ]
+        },
+        "correctCodeVariations": {
+          "type": "array"
+        },
+        "user": {
+          "type": "integer"
+        },
+        "cd": {
+          "type": "string"
+        },
+        "isAudio": {
+          "type": "boolean"
+        },
+        "isCode": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "_id",
+        "correctAnswers",
+        "files",
+        "names",
+        "audioNames",
+        "answerType",
+        "isValid",
+        "name",
+        "variations",
+        "correctCodeVariations",
+        "user",
+        "cd",
+        "isAudio",
+        "isCode"
+      ]
+    }
+  },
+  "required": [
+    "data"
+  ]
+}

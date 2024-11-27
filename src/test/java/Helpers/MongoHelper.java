@@ -13,14 +13,9 @@ public class MongoHelper {
         database = client.getDatabase("estim");
     }
 
-    public MongoCollection<Document> getCollectionByName(String name) {
-        return database.getCollection(name);
-    }
-
-    public Document getDocument(String collectionName, String findBy, String value) {
-        MongoCollection<Document> collection = getCollectionByName(collectionName);
+    public Document getDocument(String collectionName, String findBy, int value) {
+        MongoCollection<Document> collection = database.getCollection(collectionName);
         Bson query = new Document(findBy, value);
-        client.close();
         return collection.find(query).first();
     }
 }

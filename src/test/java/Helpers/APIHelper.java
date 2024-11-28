@@ -1,11 +1,14 @@
 package Helpers;
 
+import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.response.Response;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import Helpers.DataHelper.*;
+import io.restassured.specification.ResponseSpecification;
+
 import static org.hamcrest.Matchers.*;
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
@@ -17,19 +20,23 @@ public class APIHelper {
             .setContentType(ContentType.JSON)
             .log(LogDetail.ALL)
             .build();
+    private static final ResponseSpecification responseSpec = new ResponseSpecBuilder()
+            .expectStatusCode(200)
+            .log(LogDetail.BODY)
+            .build();
     private static String token;
+    private static final AuthInfo authInfo = new AuthInfo("somov_oleg", "DY;nwmkgzpnNx9n");
 
     private APIHelper() {
     }
 
-    public static User authorization(AuthInfo authInfo) {
+    public static User authorization() {
         LoginUser loginUser = given()
                 .spec(requestSpec)
                 .body(authInfo)
                 .when()
                 .post("auth/login")
-                .then().log().body()
-                .statusCode(200)
+                .then().spec(responseSpec)
                 .body(matchesJsonSchemaInClasspath("LoginUser.json"))
                 .body("user.username", is(authInfo.username))
                 .extract().body().as(LoginUser.class);
@@ -38,61 +45,28 @@ public class APIHelper {
     }
 
     public static String getToken() {
-        if (token == null) authorization(new AuthInfo("somov_oleg", "DY;nwmkgzpnNx9n"));
+        if (token == null) authorization();
         return token;
     }
 
-    public static Response addingUser(AddingInfo addingInfo, String token) {
+    public static Response apiRequest(Info body, String token, String path) {
         return given()
                 .spec(requestSpec)
                 .header("Authorization", token)
-                .body(addingInfo)
+                .body(body)
                 .when()
-                .post("user-auth1")
-                .then().log().body()
-                .statusCode(200)
-                .body(matchesJsonSchemaInClasspath("AddingUser.json"))
+                .post(path)
+                .then().spec(responseSpec)
+                .body(matchesJsonSchemaInClasspath(path + ".json"))
                 .extract().response();
     }
 
-    public static Question addingQuestion(QuestionInfo question, String token) {
-        AddingQuestion addingQuestion = given()
+    public static void badAuthorization(AuthInfo authInfo, ResponseSpecification responseSpec) {
+        given()
                 .spec(requestSpec)
-                .header("Authorization", token)
-                .body(question)
+                .body(authInfo)
                 .when()
-                .post("theme-question")
-                .then().log().body()
-                .statusCode(200)
-                .body(matchesJsonSchemaInClasspath("AddingQuestion.json"))
-                .extract().body().as(AddingQuestion.class);
-        return addingQuestion.data;
+                .post("auth/login")
+                .then().spec(responseSpec).extract().statusCode();
     }
-
-    public static VersionDB editingQuestion(EditingQuestionInfo editQuestion, String token) {
-        EditingQuestion editingQuestion = given()
-                .spec(requestSpec)
-                .header("Authorization", token)
-                .body(editQuestion)
-                .when()
-                .post("create-lts")
-                .then().log().body()
-                .statusCode(200)
-                .extract()
-                .body().as(EditingQuestion.class);
-        return editingQuestion.data.getVersionDB();
-    }
-
-    public static Response addingQuiz(QuizInfo quiz, String token) {
-        return given()
-                .spec(requestSpec)
-                .header("Authorization", token)
-                .body(quiz)
-                .when()
-                .post("quiz")
-                .then().log().body()
-                .statusCode(200)
-                .extract().response();
-    }
-
 }

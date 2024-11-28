@@ -1,0 +1,471 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "questionDB": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "integer"
+            },
+            "quizes": {
+              "type": "array",
+              "items": {}
+            },
+            "__names": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "type"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ]
+                }
+              ]
+            },
+            "name": {
+              "type": "string"
+            },
+            "contributors": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "grade": {
+                      "type": "integer"
+                    },
+                    "user": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "cd": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "grade",
+                    "user",
+                    "name",
+                    "cd"
+                  ]
+                }
+              ]
+            },
+            "decliners": {
+              "type": "array",
+              "items": {}
+            },
+            "hints": {
+              "type": "array",
+              "items": {}
+            },
+            "additionalQuestionsArr": {
+              "type": "array",
+              "items": {}
+            },
+            "useCases": {
+              "type": "array",
+              "items": {}
+            },
+            "videos": {
+              "type": "array",
+              "items": {}
+            },
+            "facts": {
+              "type": "array",
+              "items": {}
+            },
+            "interviews": {
+              "type": "array",
+              "items": {}
+            },
+            "hashTags": {
+              "type": "array",
+              "items": {}
+            },
+            "shortAnswers": {
+              "type": "array",
+              "items": {}
+            },
+            "detailedAnswers": {
+              "type": "array",
+              "items": {}
+            },
+            "cd": {
+              "type": "string"
+            },
+            "isDuplicated": {
+              "type": "boolean"
+            },
+            "useCasesLength": {
+              "type": "integer"
+            },
+            "factsLength": {
+              "type": "integer"
+            },
+            "answerProgressCount": {
+              "type": "integer"
+            },
+            "__v": {
+              "type": "integer"
+            },
+            "quizCount": {
+              "type": "integer"
+            },
+            "jsDetails": {
+              "type": "null"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "answer": {
+              "type": "string"
+            },
+            "originalDuplicateId": {
+              "type": "null"
+            },
+            "owner": {
+              "type": "object",
+              "properties": {
+                "grade": {
+                  "type": "integer"
+                },
+                "user": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "cd": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "grade",
+                "user",
+                "name",
+                "cd"
+              ]
+            },
+            "contributorsScore": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "_id",
+            "quizes",
+            "__names",
+            "name",
+            "contributors",
+            "decliners",
+            "hints",
+            "additionalQuestionsArr",
+            "useCases",
+            "videos",
+            "facts",
+            "interviews",
+            "hashTags",
+            "shortAnswers",
+            "detailedAnswers",
+            "cd",
+            "isDuplicated",
+            "useCasesLength",
+            "factsLength",
+            "answerProgressCount",
+            "__v",
+            "quizCount",
+            "jsDetails",
+            "comment",
+            "type",
+            "title",
+            "answer",
+            "originalDuplicateId",
+            "owner",
+            "contributorsScore"
+          ]
+        },
+        "versionDB": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string"
+            },
+            "sourceId": {
+              "type": "string"
+            },
+            "suggests": {
+              "type": "array",
+              "items": {}
+            },
+            "approvers": {
+              "type": "array",
+              "items": {}
+            },
+            "decliners": {
+              "type": "array",
+              "items": {}
+            },
+            "contributors": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "grade": {
+                      "type": "integer"
+                    },
+                    "user": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "cd": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "grade",
+                    "user",
+                    "name",
+                    "cd"
+                  ]
+                }
+              ]
+            },
+            "prevApprovers": {
+              "type": "array",
+              "items": {}
+            },
+            "cd": {
+              "type": "string"
+            },
+            "_id": {
+              "type": "integer"
+            },
+            "approveScore": {
+              "type": "integer"
+            },
+            "version": {
+              "type": "integer"
+            },
+            "subVersion": {
+              "type": "integer"
+            },
+            "patch": {
+              "type": "integer"
+            },
+            "versionStr": {
+              "type": "string"
+            },
+            "versionSort": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "dataStr": {
+              "type": "string"
+            },
+            "letters": {
+              "type": "null"
+            },
+            "versionStrUniq": {
+              "type": "string"
+            },
+            "__v": {
+              "type": "integer"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "jsDetails": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "quizes": {
+                  "type": "array",
+                  "items": {}
+                },
+                "hints": {
+                  "type": "array",
+                  "items": {}
+                },
+                "type": {
+                  "type": "string"
+                },
+                "videos": {
+                  "type": "array",
+                  "items": {}
+                },
+                "name": {
+                  "type": "string"
+                },
+                "hashTags": {
+                  "type": "array",
+                  "items": {}
+                },
+                "title": {
+                  "type": "string"
+                },
+                "answer": {
+                  "type": "string"
+                },
+                "facts": {
+                  "type": "array",
+                  "items": {}
+                },
+                "useCases": {
+                  "type": "array",
+                  "items": {}
+                },
+                "originalDuplicateId": {
+                  "type": "string"
+                },
+                "questionId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "jsDetails",
+                "comment",
+                "quizes",
+                "hints",
+                "type",
+                "videos",
+                "name",
+                "hashTags",
+                "title",
+                "answer",
+                "facts",
+                "useCases",
+                "originalDuplicateId",
+                "questionId"
+              ]
+            },
+            "isLTS": {
+              "type": "boolean"
+            },
+            "owner": {
+              "type": "object",
+              "properties": {
+                "grade": {
+                  "type": "integer"
+                },
+                "user": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "cd": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "grade",
+                "user",
+                "name",
+                "cd"
+              ]
+            },
+            "firstOwner": {
+              "type": "object",
+              "properties": {
+                "grade": {
+                  "type": "integer"
+                },
+                "user": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "cd": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "grade",
+                "user",
+                "name",
+                "cd"
+              ]
+            },
+            "contributorsScore": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "source",
+            "sourceId",
+            "suggests",
+            "approvers",
+            "decliners",
+            "contributors",
+            "prevApprovers",
+            "cd",
+            "_id",
+            "approveScore",
+            "version",
+            "subVersion",
+            "patch",
+            "versionStr",
+            "versionSort",
+            "name",
+            "dataStr",
+            "letters",
+            "versionStrUniq",
+            "__v",
+            "data",
+            "isLTS",
+            "owner",
+            "firstOwner",
+            "contributorsScore"
+          ]
+        }
+      },
+      "required": [
+        "questionDB",
+        "versionDB"
+      ]
+    }
+  },
+  "required": [
+    "data"
+  ]
+}

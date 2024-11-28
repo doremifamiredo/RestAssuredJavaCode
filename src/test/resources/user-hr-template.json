@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "desc": {
+          "type": "string"
+        },
+        "user": {
+          "type": "integer"
+        },
+        "exams": {
+          "type": "array",
+          "items": {}
+        },
+        "sprints": {
+          "type": "array",
+          "items": {}
+        },
+        "courses": {
+          "type": "array",
+          "items": {}
+        },
+        "cd": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_id",
+        "name",
+        "desc",
+        "user",
+        "exams",
+        "sprints",
+        "courses",
+        "cd"
+      ]
+    }
+  },
+  "required": [
+    "data"
+  ]
+}

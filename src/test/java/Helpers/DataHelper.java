@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static Helpers.UserGenerator.faker;
 import static Helpers.UserGenerator.fakerRU;
 
 public class DataHelper {
@@ -19,7 +20,7 @@ public class DataHelper {
     }
 
     @Value
-    public static class AddingInfo {
+    public static class AddingInfo implements Info {
         public CustomData customData;
         public String first_name;
         public String surname;
@@ -76,28 +77,21 @@ public class DataHelper {
         public String salesStatus; //enum
     }
 
-    public static class AddingUser {
-        public User data;
-    }
-
     @AllArgsConstructor
-    public static class QuestionInfo {
+    public static class QuestionInfo implements Info {
         public String name;
     }
 
-    public static class AddingQuestion {
-        public Question data;
-    }
-
-    public static EditingQuestionInfo getEditInfo(String question, String answer, String id) {
-        return new EditingQuestionInfo("", "version", id,
+    public static EditingQuestionInfo getEditInfo(int id) {
+        return new EditingQuestionInfo("", "version", Integer.toString(id),
                 new LTP(new LTPdata("", "", List.of(), List.of(), "", List.of(),
-                        question, List.of(), "", answer, List.of(), List.of(), "", id)),
+                        fakerRU.internet().emailSubject() + "?", List.of(), "",
+                        fakerRU.internet().emailSubject(), List.of(), List.of(), "", Integer.toString(id))),
                 new VersionDetails(0, 0, 1, "1.0.0"));
     }
 
     @AllArgsConstructor
-    public static class EditingQuestionInfo {
+    public static class EditingQuestionInfo implements Info {
         public String currentLTS;
         public String changeKey;
         public String question;
@@ -140,104 +134,8 @@ public class DataHelper {
         public String versionStr;
     }
 
-    @Getter
-    @Setter
     @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Question {
-        public int _id;
-        public ArrayList<Object> quizes;
-        @JsonIgnore
-        public ArrayList<Object> __names;
-        public String name;
-        public ArrayList<Owner> contributors;
-        public ArrayList<Object> decliners;
-        public ArrayList<Object> hints;
-        public ArrayList<Object> additionalQuestionsArr;
-        public ArrayList<Object> useCases;
-        public ArrayList<Object> videos;
-        public ArrayList<Object> facts;
-        public ArrayList<Object> interviews;
-        public ArrayList<Object> hashTags;
-        public ArrayList<Object> shortAnswers;
-        public ArrayList<Object> detailedAnswers;
-        public Date cd;
-        public boolean isDuplicated;
-        public int useCasesLength;
-        public int factsLength;
-        public int answerProgressCount;
-        public int __v;
-        public int quizCount;
-        public Object jsDetails;
-        public String comment;
-        public String type;
-        public String title;
-        public String answer;
-        public Object originalDuplicateId;
-        public Owner owner;
-        public int contributorsScore;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Owner{
-        public int grade;
-        public int user;
-        public String name;
-        public long cd;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class EditingQuestion {
-        public questionDB data;
-    }
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class questionDB {
-        public Question questionDB;
-        public VersionDB versionDB;
-    }
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class VersionDB{
-        public String source;
-        public String sourceId;
-        public ArrayList<Object> suggests;
-        public ArrayList<Object> approvers;
-        public ArrayList<Object> decliners;
-        public ArrayList<Owner> contributors;
-        public ArrayList<Object> prevApprovers;
-        public Date cd;
-        public int _id;
-        public int approveScore;
-        public int version;
-        public int subVersion;
-        public int patch;
-        public String versionStr;
-        public int versionSort;
-        public String name;
-        public String dataStr;
-        public Object letters;
-        public String versionStrUniq;
-        public int __v;
-        public LTPdata data;
-        public boolean isLTS;
-        public Owner owner;
-        public Owner firstOwner;
-        public int contributorsScore;
-    }
-
-    @AllArgsConstructor
-    public static class QuizInfo {
+    public static class QuizInfo implements Info {
         public String answerType;
         public boolean isValid;
         public String name;
@@ -254,40 +152,69 @@ public class DataHelper {
         public boolean isCorrect;
     }
 
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class AddingQuiz {
-        public Quiz data;
-    }
-
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Quiz {
-        public int _id;
-        public ArrayList<Object> correctAnswers;
-        public ArrayList<Object> files;
-        public ArrayList<Object> names;
-        public ArrayList<Object> audioNames;
-        public String answerType;
-        public boolean isValid;
-        public String name;
-        public ArrayList<Variation> variations;
-        public ArrayList<Object> correctCodeVariations;
-        public int user;
-        public Date cd;
-        public boolean isAudio;
-        public boolean isCode;
-    }
-
     public static QuizInfo getQuizInfo() {
         return new QuizInfo("quiz", true, fakerRU.internet().emailSubject() + "?", List.of(),
                 List.of(
                         new Variation(fakerRU.internet().emailSubject(), true),
                         new Variation(fakerRU.internet().emailSubject(), false),
                         new Variation(fakerRU.internet().emailSubject(), false)));
+    }
+    @AllArgsConstructor
+    public static class ModuleInfo implements Info{
+        public String name;
+        public List<Integer> questions;
+    }
+
+    public static ModuleInfo getModuleInfo() {
+        return new ModuleInfo(fakerRU.science().element(),
+                List.of(faker.random().nextInt(),
+                        faker.random().nextInt(),
+                        faker.random().nextInt()));
+    }
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class CourseInfo implements Info {
+        public String name;
+        public List<Modules> modules;
+    }
+    @AllArgsConstructor
+    public static class Modules {
+        public String module;
+        public String name;
+    }
+
+    public static CourseInfo getCourseInfo() {
+        return new CourseInfo(fakerRU.word().noun(),
+                List.of(new Modules(fakerRU.word().noun(), fakerRU.word().noun())));
+    }
+    @AllArgsConstructor
+    public static class ExamInfo implements Info {
+        public String name;
+        public String minutesStr;
+        public List<Object> potQuizes;
+    }
+
+    public static ExamInfo getExamInfo() {
+        return new ExamInfo(fakerRU.word().noun(), Integer.toString(faker.random().nextInt()), List.of());
+    }
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class TemplateInfo implements Info {
+        public String name;
+        public String desc;
+        public List<Source> exams;
+        public List<Source> courses;
+    }
+
+    @NoArgsConstructor
+    public static class Source {
+        public String sourceId;
+    }
+
+    public static TemplateInfo getTemplateInfo() {
+        return new TemplateInfo(fakerRU.word().noun(), fakerRU.word().noun(),
+                List.of(), List.of());
     }
 }

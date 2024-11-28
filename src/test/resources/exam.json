@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "potQuizes": {
+          "type": "array",
+          "items": {}
+        },
+        "potQuestions": {
+          "type": "array",
+          "items": {}
+        },
+        "currentPotQuestions": {
+          "type": "array",
+          "items": {}
+        },
+        "user": {
+          "type": "integer"
+        },
+        "minutesStr": {
+          "type": "string"
+        },
+        "startArr": {
+          "type": "array",
+          "items": {}
+        },
+        "quizQuestionsPlain": {
+          "type": "array",
+          "items": {}
+        },
+        "quizQuestionsPlainPub": {
+          "type": "array",
+          "items": {}
+        },
+        "questions": {
+          "type": "array",
+          "items": {}
+        },
+        "cd": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_id",
+        "name",
+        "potQuizes",
+        "potQuestions",
+        "currentPotQuestions",
+        "user",
+        "minutesStr",
+        "startArr",
+        "quizQuestionsPlain",
+        "quizQuestionsPlainPub",
+        "questions",
+        "cd"
+      ]
+    }
+  },
+  "required": [
+    "data"
+  ]
+}

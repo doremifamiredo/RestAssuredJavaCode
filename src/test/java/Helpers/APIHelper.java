@@ -69,4 +69,25 @@ public class APIHelper {
                 .post("auth/login")
                 .then().spec(responseSpec).extract().statusCode();
     }
+
+    public static void addingExistingUser(AddingInfo body, String token, ResponseSpecification responseError) {
+        given()
+                .spec(requestSpec)
+                .header("Authorization", token)
+                .body(body)
+                .when()
+                .post("user-auth1")
+                .then().spec(responseError);
+    }
+
+    public static Response updateInfo(Info body, String token, String path) {
+        return given()
+                .spec(requestSpec)
+                .header("Authorization", token)
+                .body(body)
+                .when()
+                .put(path)
+                .then().spec(responseSpec)
+                .extract().response();
+    }
 }

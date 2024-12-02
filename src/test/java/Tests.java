@@ -4,9 +4,12 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.path.json.JsonPath;
 import io.restassured.specification.ResponseSpecification;
 import org.bson.Document;
+import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.time.format.DateTimeFormatter;
 
 import static Helpers.APIHelper.*;
 import static Helpers.DataHelper.*;
@@ -129,5 +132,65 @@ public class Tests {
                 .build();
         badAuthorization(new AuthInfo(faker.internet().username(), faker.internet().password()), responseError);
         badAuthorization(new AuthInfo("", ""), responseError);
+    }
+
+    @Test
+    @DisplayName("11 Добавление уже существующего пользователя")
+    void addingExistingUser() {
+        AddingInfo addingInfo = new AddingInfo(new DataHelper.CustomData(faker.bool().bool(),
+                LocalDateTime.now().toString().formatted(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss Z")),
+                "active_search"),
+                faker.name().firstName(), faker.name().lastName(), faker.internet().emailAddress(),
+                faker.internet().username(), faker.internet().password(),
+                "user");
+        apiRequest(addingInfo, getToken(), "user-auth1").jsonPath();
+        APIHelper.addingExistingUser(addingInfo, getToken(), new ResponseSpecBuilder()
+                .expectStatusCode(400)
+                .log(LogDetail.BODY)
+                .build());
+    }
+
+    @Test
+    @DisplayName("12. Обновление информации о модуле")
+    void updatingModuleInformation() {
+        JsonPath firstInfo = apiRequest(getModuleInfo(), getToken(), "course-module").jsonPath();
+        JsonPath secondInfo = APIHelper.updateInfo(getUpdateModuleInfo(firstInfo.getInt("data._id")), getToken(),
+                "course-module").jsonPath();
+        assertAll(() -> assertEquals(firstInfo.getInt("data._id"), secondInfo.getInt("data._id")),
+                () -> assertNotEquals(firstInfo.getString("data.name"),
+                        secondInfo.getString("data.name")));
+    }
+
+    @Test
+    @DisplayName("13. Изменение названия квиза")
+    void changingQuizName() {
+        JsonPath firstInfo = apiRequest(getQuizInfo(), getToken(), "quiz").jsonPath();
+        JsonPath secondInfo = APIHelper.updateInfo(getUpdateQuizInfo(firstInfo.getInt("data._id")), getToken(),
+                "quiz").jsonPath();
+        assertAll(() -> assertEquals(firstInfo.getInt("data._id"), secondInfo.getInt("data._id")),
+                () -> assertNotEquals(firstInfo.getString("data.name"),
+                        secondInfo.getString("data.name")));
+    }
+
+    @Test
+    @DisplayName("14. Редактирование наименования курса")
+    void updateModule() {
+        JsonPath firstInfo = apiRequest(getCourseInfo(), getToken(), "course").jsonPath();
+        JsonPath secondInfo = APIHelper.updateInfo(getUpdateCourseInfo(firstInfo.getInt("data._id")), getToken(),
+                "course").jsonPath();
+        assertAll(() -> assertEquals(firstInfo.getInt("data._id"), secondInfo.getInt("data._id")),
+                () -> assertNotEquals(firstInfo.getString("data.name"),
+                        secondInfo.getString("data.name")));
+    }
+
+    @Test
+    @DisplayName("15. Обновление информации об экзамене")
+    void updateExamInfo() {
+        JsonPath firstInfo = apiRequest(getExamInfo(), getToken(), "exam").jsonPath();
+        JsonPath secondInfo = APIHelper.updateInfo(getUpdateExamInfo(firstInfo.getInt("data._id")), getToken(),
+                "exam").jsonPath();
+        assertAll(() -> assertEquals(firstInfo.getInt("data._id"), secondInfo.getInt("data._id")),
+                () -> assertNotEquals(firstInfo.getString("data.name"),
+                        secondInfo.getString("data.name")));
     }
 }

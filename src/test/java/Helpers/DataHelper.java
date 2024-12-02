@@ -143,6 +143,23 @@ public class DataHelper {
         public List<Variation> variations;
     }
 
+    public static class UpdateQuizInfo extends QuizInfo implements Info {
+        public int _id;
+
+        public UpdateQuizInfo(int id, String answerType, boolean isValid, String name,
+                              List<Object> files, List<Variation> variations) {
+            super(answerType, isValid, name, files, variations);
+            this._id = id;
+        }
+    }
+    public static UpdateQuizInfo getUpdateQuizInfo(int id) {
+        return new UpdateQuizInfo(id, "quiz", true, fakerRU.word().noun() + "?", List.of(),
+                List.of(
+                        new Variation(fakerRU.internet().emailSubject(), true),
+                        new Variation(fakerRU.internet().emailSubject(), false),
+                        new Variation(fakerRU.internet().emailSubject(), false)));
+    }
+
     @Getter
     @Setter
     @AllArgsConstructor
@@ -171,6 +188,22 @@ public class DataHelper {
                         faker.random().nextInt(),
                         faker.random().nextInt()));
     }
+
+    public static class UpdateModuleInfo extends ModuleInfo implements Info {
+        public int _id;
+
+        public UpdateModuleInfo(int id, String name, List<Integer> questions) {
+            super(name, questions);
+            this._id = id;
+        }
+    }
+    public static UpdateModuleInfo getUpdateModuleInfo(int id) {
+        return new UpdateModuleInfo(id, fakerRU.science().element(),
+                List.of(faker.random().nextInt(),
+                        faker.random().nextInt(),
+                        faker.random().nextInt()));
+    }
+
     @Getter
     @Setter
     @AllArgsConstructor
@@ -188,6 +221,20 @@ public class DataHelper {
         return new CourseInfo(fakerRU.word().noun(),
                 List.of(new Modules(fakerRU.word().noun(), fakerRU.word().noun())));
     }
+
+    public static class UpdateCourseInfo extends CourseInfo implements Info {
+        public int _id;
+
+        public UpdateCourseInfo(String name, List<Modules> modules, int id) {
+            super(name, modules);
+            this._id = id;
+        }
+    }
+    public static UpdateCourseInfo getUpdateCourseInfo(int id) {
+        return new UpdateCourseInfo(fakerRU.word().noun(),
+                List.of(new Modules(fakerRU.word().noun(), fakerRU.word().noun())), id);
+    }
+
     @AllArgsConstructor
     public static class ExamInfo implements Info {
         public String name;
@@ -213,6 +260,17 @@ public class DataHelper {
         public String sourceId;
     }
 
+    public static class UpdateExamInfo extends ExamInfo implements Info {
+        public int _id;
+
+        public UpdateExamInfo(String name, String minutesStr, List<Object> potQuizes, int id) {
+            super(name, minutesStr, potQuizes);
+            this._id = id;
+        }
+    }
+    public static UpdateExamInfo getUpdateExamInfo(int id) {
+        return new UpdateExamInfo(fakerRU.word().noun(), Integer.toString(faker.random().nextInt()), List.of(), id);
+    }
     public static TemplateInfo getTemplateInfo() {
         return new TemplateInfo(fakerRU.word().noun(), fakerRU.word().noun(),
                 List.of(), List.of());
